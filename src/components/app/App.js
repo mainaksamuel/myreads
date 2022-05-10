@@ -1,7 +1,7 @@
 import "./App.css";
 
-import SearchReads from "./SearchReads";
-import Dashboard from "./Dashboard";
+import SearchReads from "../SearchReads";
+import Dashboard from "../Dashboard";
 import { Route, Routes } from "react-router-dom";
 
 function App() {
