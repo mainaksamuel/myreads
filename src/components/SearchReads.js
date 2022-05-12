@@ -1,27 +1,34 @@
-import { useRef, useState } from 'react';
+import { useContext, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { search } from '../BooksAPI';
 
 import BookItem from '../components/BookItem';
+import MyReadsContext from "../MyReadsContext";
 
 
 const SearchReads = () => {
   const searchRef = useRef("");
   const [searchResults, setSearchResults] = useState([]);
 
-  const handleSearch = () => {
-    // const results = await search(searchRef.current.value);
-    // console.log("Search Results: ", results);
-    // if (results.error) {
-    //   setSearchResults([]);
-    //   return;
-    // }
-    // setSearchResults(results)
+  const { myReads } = useContext(MyReadsContext);
 
+  const myReadsBookIDs = useMemo(() => {
+    return Object.values(myReads)
+      .flat()
+      .reduce((acc, book) => {
+        acc.push(book.id);
+        return acc;
+      }, []);
+  }, [myReads]);
+
+  const handleSearch = () => {
     let timer;
+
     return () => {
+
       if (timer) clearTimeout(timer);
       if (searchRef.current.value.trim().length < 1) return;
+
       timer = setTimeout(async () => {
         const results = await search(searchRef.current.value);
         console.log("Search Results: ", results);
@@ -29,8 +36,9 @@ const SearchReads = () => {
           setSearchResults([]);
           return;
         }
-        setSearchResults(results)
-      }, 2000);
+        const books = results.filter(book => !myReadsBookIDs.includes(book.id));
+        setSearchResults(books);
+      }, 500);
     };
   };
 
