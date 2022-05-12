@@ -1,4 +1,4 @@
-import { useContext, useMemo, useRef, useState } from 'react';
+import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { search } from '../BooksAPI';
 
@@ -7,8 +7,9 @@ import MyReadsContext from "../MyReadsContext";
 
 
 const SearchReads = () => {
-  const searchRef = useRef("");
+  const inputRef = useRef("");
   const [searchResults, setSearchResults] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const { myReads } = useContext(MyReadsContext);
 
@@ -21,26 +22,37 @@ const SearchReads = () => {
       }, []);
   }, [myReads]);
 
-  const handleSearch = () => {
-    let timer;
 
-    return () => {
+  useEffect(() => {
+    const getSearchResults = async () => {
+      if (searchTerm.trim().length < 1) {
+        setSearchResults([]);
+        return;
+      }
+      const results = await search(searchTerm);
+      if (!results || results.error) {
+        setSearchResults([]);
+        return;
+      }
+      const resultsNotInShelves = results.filter(book => !myReadsBookIDs.includes(book.id));
+      setSearchResults(resultsNotInShelves);
+    }
+    getSearchResults();
+  }, [searchTerm, myReadsBookIDs]);
 
-      if (timer) clearTimeout(timer);
-      if (searchRef.current.value.trim().length < 1) return;
 
-      timer = setTimeout(async () => {
-        const results = await search(searchRef.current.value);
-        console.log("Search Results: ", results);
-        if (results.error) {
-          setSearchResults([]);
-          return;
-        }
-        const books = results.filter(book => !myReadsBookIDs.includes(book.id));
-        setSearchResults(books);
-      }, 500);
-    };
-  };
+  let timeout = null;
+  let input = document.getElementById('search-input');
+
+  const handleSearch = (evt) => {
+    input.addEventListener('keyup', () => {
+      clearTimeout(timeout);
+
+      timeout = setTimeout(() => {
+        setSearchTerm(evt.target.value);
+      }, 1000)
+    });
+  }
 
   return (
     <div className="search-books">
@@ -51,11 +63,11 @@ const SearchReads = () => {
 
         <div className="search-books-input-wrapper">
           <input
+            id='search-input'
             type="text"
             placeholder="Search by title, author, or ISBN"
-            ref={searchRef}
-            onChange={handleSearch()}
-          /* onChange={handleSearch} */
+            ref={inputRef}
+            onChange={handleSearch}
           />
         </div>
       </div>

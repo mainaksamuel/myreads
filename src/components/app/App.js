@@ -44,8 +44,6 @@ function App() {
       .catch(e => console.log("Encountered an error: ", e));
   };
 
-
-
   return (
     <MyReadsContext.Provider
       value={{
