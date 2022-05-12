@@ -1,9 +1,13 @@
 import BookshelfSelector from './BookshelfSelector';
+import MyReadsContext from '../MyReadsContext';
+import { useContext } from 'react';
 
+const BookItem = ({ book }) => {
 
-const BookItem = ({ book, bookshelves, onBookshelfChange }) => {
+  const { bookshelves, handleBookshelfUpdate } = useContext(MyReadsContext);
+
   const handleBookshelfSelect = (newShelf) => {
-    onBookshelfChange(book, newShelf);
+    handleBookshelfUpdate(book, newShelf);
   }
 
   return (
@@ -19,7 +23,11 @@ const BookItem = ({ book, bookshelves, onBookshelfChange }) => {
           }}
         ></div>
 
-        <BookshelfSelector currentShelf={book.shelf} bookshelves={bookshelves} onBookshelfSelect={handleBookshelfSelect} />
+        <BookshelfSelector
+          currentShelf={book?.shelf}
+          bookshelves={bookshelves}
+          onBookshelfSelect={handleBookshelfSelect}
+        />
 
       </div>
       <div className="book-title">{book.title}</div>

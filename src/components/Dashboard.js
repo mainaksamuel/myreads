@@ -1,41 +1,16 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 
 import Bookshelf from "./Bookshelf";
-import { get, getAll, update } from "../BooksAPI";
+import MyReadsContext from "../MyReadsContext";
 
-const Dashboard = ({ bookshelves }) => {
+const Dashboard = () => {
 
-  const [myReads, setMyReads] = useState({});
-
-  const getAllReads = () => {
-    const getReadsByShelf = async () => {
-      const bookReads = await getAll();
-      if (bookReads.error) {
-        setMyReads([]);
-        return;
-      }
-      const booksByShelf = bookReads.reduce((acc, currentBook) => {
-        acc[currentBook.shelf] = acc[currentBook.shelf] || [];
-        acc[currentBook.shelf].push(currentBook);
-        return acc;
-      }, {});
-
-      setMyReads(booksByShelf);
-    }
-    getReadsByShelf();
-  };
+  const { getAllReads, myReads, } = useContext(MyReadsContext);
 
   useEffect(() => {
     getAllReads();
   }, []);
-
-  const handleBookshelfUpdate = (updatedRead, newShelf) => {
-    update(updatedRead, newShelf)
-      .then(() => getAllReads())
-      .catch(e => console.log("Encountered an error: ", e));
-  };
-
 
   return (
     <div className="list-books">
@@ -51,8 +26,6 @@ const Dashboard = ({ bookshelves }) => {
                   key={shelf}
                   currentShelf={shelf}
                   books={myReads[shelf]}
-                  bookshelves={bookshelves}
-                  onBookshelfUpdate={handleBookshelfUpdate}
                 />
               )
             })
