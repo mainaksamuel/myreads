@@ -1,5 +1,35 @@
 # MyReads Project
 
+This project allows a user to select books they are reading, want to read, and have read.
+This project uses the udacity backend API for fetching the book information and has a limited amount of queries that work.
+
+
+## How to run this project locally
+
+Clone the project
+
+```bash
+  git clone https://github.com/mainaksamuel/myreads.git
+```
+
+Go to the project directory
+
+```bash
+  cd myreads
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+Start the server and browse to the given `url`
+
+```bash
+  npm start
+```
+
 ## Backend Server
 
 The provided file [`BooksAPI.js`](src/BooksAPI.js) contains the methods you will need to perform necessary operations on the backend:
