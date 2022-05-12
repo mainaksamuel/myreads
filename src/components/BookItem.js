@@ -24,7 +24,7 @@ const BookItem = ({ book }) => {
         ></div>
 
         <BookshelfSelector
-          currentShelf={book.shelf || "none"}
+          currentShelf={book?.shelf || "none"}
           bookshelves={bookshelves}
           onBookshelfSelect={handleBookshelfSelect}
         />

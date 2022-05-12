@@ -9,7 +9,7 @@ const BookshelfSelector = ({ currentShelf, bookshelves, onBookshelfSelect }) => 
       <select onChange={handleSelect}
         defaultValue={currentShelf}
       >
-        <option value="none" disabled>
+        <option value="moveTo" disabled>
           Move to...
         </option>
         {
