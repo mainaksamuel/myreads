@@ -1,16 +1,13 @@
 import { Link } from "react-router-dom";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 
 import Bookshelf from "./Bookshelf";
 import MyReadsContext from "../MyReadsContext";
 
 const Dashboard = () => {
 
-  const { getAllReads, myReads, } = useContext(MyReadsContext);
+  const { myReads, } = useContext(MyReadsContext);
 
-  useEffect(() => {
-    getAllReads();
-  }, []);
 
   return (
     <div className="list-books">

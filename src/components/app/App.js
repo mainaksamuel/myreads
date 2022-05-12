@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import "./App.css";
 import { getAll, update } from "../../BooksAPI";
@@ -15,6 +15,7 @@ function App() {
   };
 
   const [myReads, setMyReads] = useState({});
+
   const getAllReads = () => {
     const getReadsByShelf = async () => {
       const bookReads = await getAll();
@@ -33,11 +34,16 @@ function App() {
     getReadsByShelf();
   };
 
+  useEffect(() => {
+    getAllReads();
+  }, []);
+
   const handleBookshelfUpdate = (updatedRead, newShelf) => {
     update(updatedRead, newShelf)
       .then(() => getAllReads())
       .catch(e => console.log("Encountered an error: ", e));
   };
+
 
 
   return (
@@ -54,7 +60,6 @@ function App() {
           <Route exact path="/" element={<Dashboard />} />
           <Route path="/search" element={<SearchReads />} />
         </Routes>
-
       </div>
     </MyReadsContext.Provider>
   );

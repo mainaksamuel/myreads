@@ -55,7 +55,10 @@ const SearchReads = () => {
         <ol className="books-grid">
           {
             searchResults.map(result => (
-              <li key={Math.random()}>{result.title}</li>
+              <BookItem
+                key={result.id}
+                book={result}
+              />
             ))
           }
         </ol>
