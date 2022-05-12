@@ -19,7 +19,7 @@ const BookItem = ({ book }) => {
             width: 128,
             height: 193,
             backgroundImage:
-              `url(${book.imageLinks.thumbnail})`,
+              `url(${book.imageLinks?.thumbnail})`,
           }}
         ></div>
 
@@ -32,7 +32,7 @@ const BookItem = ({ book }) => {
       </div>
       <div className="book-title">{book.title}</div>
       <div className="book-authors">
-        {book.authors.map(author => (
+        {book.authors?.map(author => (
           <div key={book.id + author}> {author} </div>
         ))}
       </div>
