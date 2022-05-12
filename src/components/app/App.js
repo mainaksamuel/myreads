@@ -11,7 +11,6 @@ function App() {
     "read": "Read",
   }
 
-
   return (
     <div className="app">
       <Routes>

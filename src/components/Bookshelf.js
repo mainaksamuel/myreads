@@ -1,10 +1,9 @@
-// import { useState } from "react";
 import BookItem from "./BookItem";
 
 const Bookshelf = ({ currentShelf, books, bookshelves, onBookshelfUpdate }) => {
 
   const handleBookshelfChange = (updatedRead, newShelf) => {
-    onBookshelfUpdate(updatedRead, newShelf, currentShelf);
+    onBookshelfUpdate(updatedRead, newShelf);
   }
 
 
@@ -15,10 +14,9 @@ const Bookshelf = ({ currentShelf, books, bookshelves, onBookshelfUpdate }) => {
         <ol className="books-grid">
           {
             books.map((myRead) => (
-              <li key={currentShelf + myRead.title}>
+              <li key={myRead.id}>
                 <BookItem
                   book={myRead}
-                  currentShelf={currentShelf}
                   bookshelves={bookshelves}
                   onBookshelfChange={handleBookshelfChange} />
               </li>

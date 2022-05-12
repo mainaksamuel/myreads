@@ -1,7 +1,7 @@
 import BookshelfSelector from './BookshelfSelector';
 
 
-const BookItem = ({ currentShelf, book, bookshelves, onBookshelfChange }) => {
+const BookItem = ({ book, bookshelves, onBookshelfChange }) => {
   const handleBookshelfSelect = (newShelf) => {
     onBookshelfChange(book, newShelf);
   }
@@ -15,17 +15,20 @@ const BookItem = ({ currentShelf, book, bookshelves, onBookshelfChange }) => {
             width: 128,
             height: 193,
             backgroundImage:
-              `url(${book.coverURL})`,
+              `url(${book.imageLinks.thumbnail})`,
           }}
         ></div>
 
-        <BookshelfSelector currentShelf={currentShelf} bookshelves={bookshelves} onBookshelfSelect={handleBookshelfSelect} />
+        <BookshelfSelector currentShelf={book.shelf} bookshelves={bookshelves} onBookshelfSelect={handleBookshelfSelect} />
 
       </div>
       <div className="book-title">{book.title}</div>
-      <div className="book-authors">{book.author}</div>
+      <div className="book-authors">
+        {book.authors.map(author => (
+          <div key={book.id + author}> {author} </div>
+        ))}
+      </div>
     </div >
-
   );
 };
 export default BookItem;
