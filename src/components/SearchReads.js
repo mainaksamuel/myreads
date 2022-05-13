@@ -80,4 +80,5 @@ const SearchReads = () => {
     </div>
   );
 };
+
 export default SearchReads;

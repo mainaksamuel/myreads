@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 const BookshelfSelector = ({ currentShelf, bookshelves, onBookshelfSelect }) => {
 
   const handleSelect = (evt) => {
@@ -27,4 +29,11 @@ const BookshelfSelector = ({ currentShelf, bookshelves, onBookshelfSelect }) => 
     </div>
   );
 };
+
+BookshelfSelector.propType = {
+  currentShelf: PropTypes.string.isRequired,
+  bookshelves: PropTypes.object.isRequired,
+  onBookshelfSelect: PropTypes.func.isRequired,
+};
+
 export default BookshelfSelector;

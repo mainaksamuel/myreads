@@ -1,6 +1,8 @@
+import PropTypes from 'prop-types';
+import { useContext } from "react";
+
 import BookItem from "./BookItem";
 import MyReadsContext from "../MyReadsContext";
-import { useContext } from "react";
 
 const Bookshelf = ({ currentShelf, books }) => {
 
@@ -23,4 +25,10 @@ const Bookshelf = ({ currentShelf, books }) => {
     </div>
   );
 };
+
+BookItem.propType = {
+  currentShelf: PropTypes.string.isRequired,
+  books: PropTypes.array.isRequired,
+};
+
 export default Bookshelf;

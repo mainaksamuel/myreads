@@ -1,6 +1,8 @@
+import PropTypes from 'prop-types';
+import { useContext } from 'react';
+
 import BookshelfSelector from './BookshelfSelector';
 import MyReadsContext from '../MyReadsContext';
-import { useContext } from 'react';
 
 const BookItem = ({ book }) => {
 
@@ -40,4 +42,9 @@ const BookItem = ({ book }) => {
     </div >
   );
 };
+
+BookItem.propType = {
+  book: PropTypes.object.isRequired,
+};
+
 export default BookItem;
