@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 
 import "./App.css";
 import { getAll, update } from "../../BooksAPI";
@@ -42,12 +42,12 @@ function App() {
       .flat();
   }, [myReads]);
 
-  const checkIfBookInShelf = (book) => {
+  const checkIfBookInShelf = useCallback((book) => {
     const inShelf = readsInShelves.find(({ id }) => id === book.id);
     if (inShelf) return inShelf;
 
     return false;
-  };
+  }, [readsInShelves]);
 
   // Send `update` request to API and Update the UI through state.
   const handleBookshelfUpdate = (updatedRead, newShelf, oldShelf) => {
@@ -77,7 +77,6 @@ function App() {
       value={{
         bookshelves,
         myReads,
-        getAllReads,
         handleBookshelfUpdate,
         checkIfBookInShelf,
       }}
