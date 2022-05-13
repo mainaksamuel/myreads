@@ -6,8 +6,9 @@ const BookItem = ({ book }) => {
 
   const { bookshelves, handleBookshelfUpdate } = useContext(MyReadsContext);
 
-  const handleBookshelfSelect = (newShelf) => {
-    handleBookshelfUpdate(book, newShelf);
+  const handleBookshelfSelect = (newShelf, previousShelf) => {
+    const oldShelf = previousShelf || "none";
+    handleBookshelfUpdate(book, newShelf, oldShelf);
   }
 
   return (

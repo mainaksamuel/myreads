@@ -6,8 +6,7 @@ import MyReadsContext from "../MyReadsContext";
 
 const Dashboard = () => {
 
-  const { myReads, } = useContext(MyReadsContext);
-
+  const { myReads } = useContext(MyReadsContext);
 
   return (
     <div className="list-books">

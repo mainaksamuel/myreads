@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { search } from '../BooksAPI';
@@ -13,17 +13,7 @@ const SearchReads = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [onFindResults, setOnFindResults] = useState(true);
 
-  const { myReads } = useContext(MyReadsContext);
-
-  const myReadsBookIDs = useMemo(() => {
-    return Object.values(myReads)
-      .flat()
-      .reduce((acc, book) => {
-        acc.push(book.id);
-        return acc;
-      }, []);
-  }, [myReads]);
-
+  const { checkIfBookInShelf } = useContext(MyReadsContext);
 
   useEffect(() => {
     const getSearchResults = async () => {
@@ -38,12 +28,11 @@ const SearchReads = () => {
         setOnFindResults(false);
         return;
       }
-      const resultsNotInShelves = results.filter(book => !myReadsBookIDs.includes(book.id));
-      setSearchResults(resultsNotInShelves);
+      setSearchResults(results);
       setOnFindResults(true);
     }
     getSearchResults();
-  }, [searchTerm, myReadsBookIDs]);
+  }, [searchTerm]);
 
 
   let timeout = null;
@@ -55,7 +44,7 @@ const SearchReads = () => {
 
       timeout = setTimeout(() => {
         setSearchTerm(inputRef.current.value);
-      }, 1000)
+      }, 500)
     });
   }
 
@@ -81,7 +70,7 @@ const SearchReads = () => {
             ? searchResults?.map(result => (
               <BookItem
                 key={result.id}
-                book={result}
+                book={checkIfBookInShelf(result) || result}
               />
             ))
             : (<NotFound />)

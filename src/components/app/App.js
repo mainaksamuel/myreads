@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 import "./App.css";
 import { getAll, update } from "../../BooksAPI";
@@ -15,7 +15,6 @@ function App() {
   };
 
   const [myReads, setMyReads] = useState({});
-
   const getAllReads = () => {
     const getReadsByShelf = async () => {
       const bookReads = await getAll();
@@ -38,10 +37,39 @@ function App() {
     getAllReads();
   }, []);
 
-  const handleBookshelfUpdate = (updatedRead, newShelf) => {
+  const readsInShelves = useMemo(() => {
+    return Object.values(myReads)
+      .flat();
+  }, [myReads]);
+
+  const checkIfBookInShelf = (book) => {
+    const inShelf = readsInShelves.find(({ id }) => id === book.id);
+    if (inShelf) return inShelf;
+
+    return false;
+  };
+
+  // Send `update` request to API and Update the UI through state.
+  const handleBookshelfUpdate = (updatedRead, newShelf, oldShelf) => {
     update(updatedRead, newShelf)
-      .then(() => getAllReads())
       .catch(e => console.log("Encountered an error: ", e));
+
+    updatedRead.shelf = newShelf;
+    setMyReads(() => {
+      // check if old shelf was previously `none` i.e. from search page
+      if (oldShelf === "none") return { ...myReads, [newShelf]: myReads[newShelf].concat([updatedRead]) };
+
+      const updatedBooksInOldShelf = myReads[oldShelf]
+        .filter(({ id }) => id !== updatedRead.id);
+
+      // check if new shelf was currently `none` i.e. removing from shelf
+      if (newShelf === "none") return { ...myReads, [oldShelf]: [...updatedBooksInOldShelf] };
+
+      const updatedBooksInNewShelf = myReads[newShelf].concat([updatedRead]);
+
+      return { ...myReads, [oldShelf]: [...updatedBooksInOldShelf], [newShelf]: [...updatedBooksInNewShelf] }
+    });
+
   };
 
   return (
@@ -51,6 +79,7 @@ function App() {
         myReads,
         getAllReads,
         handleBookshelfUpdate,
+        checkIfBookInShelf,
       }}
     >
       <div className="app">

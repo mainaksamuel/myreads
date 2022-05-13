@@ -1,7 +1,7 @@
 const BookshelfSelector = ({ currentShelf, bookshelves, onBookshelfSelect }) => {
 
   const handleSelect = (evt) => {
-    onBookshelfSelect(evt.target.value);
+    onBookshelfSelect(evt.target.value, currentShelf);
   }
 
   return (
